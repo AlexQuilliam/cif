@@ -173,15 +173,15 @@ public final class FileUtils {
 		}
 	}
 	
-	public static double getFileSize(String filePath, String unit) {
+	public static double getFileSize(String filePath, Unit unit) {
 		try {
 			double fileSize = Files.walk(new File(filePath).toPath()).map(f -> f.toFile()).filter(f -> f.isFile()).mapToLong(f -> f.length()).sum();
 				
-			if(unit == "b") {
+			if(unit == Unit.BYTES) {
 				return fileSize;
-			}else if(unit == "kb") {
+			}else if(unit == Unit.KILOBYTES) {
 				return fileSize / 1000;
-			}else if(unit == "mb") {
+			}else if(unit == Unit.MEGABYTES) {
 				return fileSize / 1000000;
 			}else {
 				throw new InvalidUnitCodeException(unit);

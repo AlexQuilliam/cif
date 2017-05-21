@@ -19,7 +19,7 @@ public class Dictionary extends ArrayList<String> {
 	}
 	
 	private void createDictionaryFromPatterns(ArrayList<String> patterns) {
-		ArrayList<Integer> reservedValues = new ArrayList<Integer>(Arrays.asList(0x002D, 0x0030, 0x0031, 0x0032, 0x0033, 0x0034, 0x0035, 0x0036, 0x0037, 0x0038, 0x0039, 0x003A));
+		final ArrayList<Integer> reservedValues = new ArrayList<Integer>(Arrays.asList(0x002D, 0x0030, 0x0031, 0x0032, 0x0033, 0x0034, 0x0035, 0x0036, 0x0037, 0x0038, 0x0039, 0x003A));
 		
 		for(int i = 0x0000, index = 0; index < patterns.size(); i++) {
 			if(Character.isDefined(i) && isPrintable(i) && !(reservedValues.contains(i))) {
