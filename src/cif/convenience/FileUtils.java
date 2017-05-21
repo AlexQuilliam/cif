@@ -10,8 +10,8 @@ import java.nio.file.Paths;
 
 import javax.imageio.ImageIO;
 
-import cif.backend.PixelDataObject;
-import cif.backend.PrimaryCompressor;
+import cif.core.PixelDataObject;
+import cif.core.PrimaryCompressor;
 import cif.exceptions.InvalidUnitCodeException;
 
 public final class FileUtils {

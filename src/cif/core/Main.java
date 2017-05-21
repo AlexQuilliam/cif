@@ -1,4 +1,4 @@
-package cif.backend;
+package cif.core;
 
 import cif.convenience.Benchmark;
 import cif.convenience.FileUtils;
