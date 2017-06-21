@@ -11,7 +11,9 @@ import cif.convenience.Print;
 import cif.convenience.Unit;
 import cif.core.primary.PrimaryCompressor;
 import cif.core.primary.PrimaryDecompressor;
-import cif.core.primary.PrimaryDictionary;
+import cif.core.secondary.SecondaryCompressor;
+import cif.core.secondary.SecondaryDecompressor;
+import cif.core.secondary.compressed.CSecondaryPatternSet;
 
 //TODO:
 //*In PrimaryPatternSet, find out why the limit can't be less than 6
@@ -25,6 +27,7 @@ public class Main {
 
 	@SuppressWarnings("unchecked")
 	public Main() {		
+		//prerequsites
 		GlobalUtils.pixelData = (List<List<Integer>>) FileUtils.FileReader.read(input, ReadAs.PIXELDATA);
 		GlobalUtils.pixelData = GlobalUtils.flipData(GlobalUtils.pixelData);
 		
@@ -32,19 +35,33 @@ public class Main {
 		GlobalUtils.pixelData = new PixelBlender(GlobalUtils.pixelData).getBlendedData();
 		Benchmark.endAndPrint(4, "Pixel blending took: ", Unit.MILLISECONDS);
 		
+		//primary compression
 		Benchmark.start(6);
 		String pCompressionResult = new PrimaryCompressor(GlobalUtils.pixelData).getPCompressedData();
-		Benchmark.endAndPrint(6, "Primary compression took ", Unit.MILLISECONDS);
+		Benchmark.endAndPrint(6, "Primary compression took: ", Unit.MILLISECONDS);
 			
 		FileUtils.FileWriter.write(textOutput, pCompressionResult, WriteAs.PLAINTEXT);
 		
+		//secondary compression
+		Benchmark.start(10);
+		String sCompressedData = new SecondaryCompressor(pCompressionResult).getUSCompressedData();
+		Benchmark.endAndPrint(10, "Secondary compressor took: ", Unit.MILLISECONDS);
+		
+		FileUtils.FileWriter.write(textOutput, sCompressedData, WriteAs.PLAINTEXT);
+		
+		//secondary decompression
+		Benchmark.start(11);
+		String sDecompressedData = new SecondaryDecompressor(sCompressedData).getUSDecompressedData();
+		Benchmark.endAndPrint(11, "Secondary decompressor took: ", Unit.MILLISECONDS);
+		
+		//primary decompression
 		Benchmark.start(1);
-		List<List<Integer>> decompressedPixelData = new PrimaryDecompressor(pCompressionResult).getPixelData();
-		Benchmark.endAndPrint(1, "Primary decompression took ", Unit.MILLISECONDS);
+		List<List<Integer>> decompressedPixelData = new PrimaryDecompressor(sDecompressedData).getPixelData();
+		Benchmark.endAndPrint(1, "Primary decompression took: ", Unit.MILLISECONDS);
 		
 		FileUtils.FileWriter.write(pngOutput, decompressedPixelData, WriteAs.PNG);
 		
-		Print.ln("File size is " + FileUtils.getFileSize(textOutput, Unit.KILOBYTES) + " kilobytes, down from " + FileUtils.getFileSize(pngOutput, Unit.KILOBYTES) + " kilobytes\n");
+		Print.ln("\nFile size is " + FileUtils.getFileSize(textOutput, Unit.KILOBYTES) + " kilobytes, down from " + FileUtils.getFileSize(pngOutput, Unit.KILOBYTES) + " kilobytes\n");
 	}
 
 	public static void main(String[] args) {

@@ -15,7 +15,7 @@ public class Print {
 		if(disable) return;
 		
 		for(int i = 0; i < array.length; i++) {
-			System.out.println(i);
+			System.out.println(array[i]);
 		}
 	}
 	

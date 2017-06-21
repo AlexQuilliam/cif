@@ -5,6 +5,7 @@ import java.util.Arrays;
 import java.util.List;
 import java.util.stream.Collectors;
 import java.util.stream.IntStream;
+import java.util.stream.Stream;
 
 public final class GlobalUtils {
 	public static List<List<Integer>> pixelData = null;
@@ -26,6 +27,10 @@ public final class GlobalUtils {
 		}
 		
 		return new ArrayList<>();
+	}
+	
+	public static String repeat(String s, int n) {
+	    return Stream.generate(() -> s).limit(n).collect(Collectors.joining(""));
 	}
 	
 	//edited version of Apache Commons StringUtils.replace (Why import a whole library when you only need 1 method?)
