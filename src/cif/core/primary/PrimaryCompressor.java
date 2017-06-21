@@ -3,6 +3,8 @@ package cif.core.primary;
 import java.util.List;
 import java.util.stream.Collectors;
 
+import cif.convenience.GlobalUtils;
+
 //Primary compressor; identifies reoccuring pixel values, and compresses them
 //takes pixel data (List<List<Integer>>) and compresses it
 public class PrimaryCompressor {
@@ -43,21 +45,15 @@ public class PrimaryCompressor {
 		String pixelData = "";
 		String compiledDictionary = "";
 		
-		String dimensions = Integer.toString(data.get(0).size()) + " " + Integer.toString(data.size());
-		String zeros = "";
+		String dimensions = Integer.toString(data.get(0).size()) + "," + Integer.toString(data.size());
 		
-		//create and append dimensions
-		for(int i = 0; i < (10 - dimensions.length()); i++) {
-			zeros += "0";
-		}
-		
-		compiledData += (zeros + dimensions);
+		compiledData += (dimensions + ":");
 		
 		//create and append compressed pixel data
 		pixelData += String.join("", data.stream().map(l -> String.join("", l)).collect(Collectors.toList()));
 		
 		for(String s : dictionary) {
-			pixelData = pixelData.replace(s.substring(0, s.length() - 1), s.substring(s.length() - 1));
+			pixelData = GlobalUtils.replace(pixelData, s.substring(0, s.length() - 1), s.substring(s.length() - 1));
 		}
 		
 		compiledData += pixelData;

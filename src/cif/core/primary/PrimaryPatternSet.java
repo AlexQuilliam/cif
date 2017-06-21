@@ -15,16 +15,7 @@ public class PrimaryPatternSet extends ArrayList<String> {
 	
 	//create the patterns
 	private void extractPatterns(Map<String, Integer> occurences) {
-		int limit = decideLimit();
-		this.addAll(occurences.entrySet().stream().filter(key -> key.getValue() >= limit).map(Map.Entry::getKey).collect(Collectors.toList()));
-	}
-	
-	//METHOD ON HOLD
-	//TODO: find out why the limit can't be less than 6
-	//if there are grey patches in the decompressed image, this method could be the issue
-	//dynamically calculate the number of times a value has to occur for it to be included in the dictionary
-	private int decideLimit() {
-		return 6;
+		this.addAll(occurences.entrySet().stream().filter(key -> key.getValue() >= 2).map(Map.Entry::getKey).collect(Collectors.toList()));
 	}
 	
 	//calculates the number of occurences of each value, as well as calculating the number of unique values in the dataset

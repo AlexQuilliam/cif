@@ -11,6 +11,7 @@ import cif.convenience.Print;
 import cif.convenience.Unit;
 import cif.core.primary.PrimaryCompressor;
 import cif.core.primary.PrimaryDecompressor;
+import cif.core.primary.PrimaryDictionary;
 
 //TODO:
 //*In PrimaryPatternSet, find out why the limit can't be less than 6
@@ -36,7 +37,7 @@ public class Main {
 		Benchmark.endAndPrint(6, "Primary compression took ", Unit.MILLISECONDS);
 			
 		FileUtils.FileWriter.write(textOutput, pCompressionResult, WriteAs.PLAINTEXT);
-
+		
 		Benchmark.start(1);
 		List<List<Integer>> decompressedPixelData = new PrimaryDecompressor(pCompressionResult).getPixelData();
 		Benchmark.endAndPrint(1, "Primary decompression took ", Unit.MILLISECONDS);

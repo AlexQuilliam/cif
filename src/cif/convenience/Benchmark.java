@@ -41,6 +41,8 @@ public class Benchmark {
 				e.printStackTrace();
 			}
 		}
+		
+		elapsedTime.remove(id);
 	}
 	
 	public static void print(int id, String message, Unit unit) {

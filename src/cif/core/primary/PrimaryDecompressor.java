@@ -24,27 +24,21 @@ public class PrimaryDecompressor {
 	//decompress the pixel data
 	private String decompress(String compressedData, PrimaryDictionary dictionary) {
 		for(String s : dictionary) {
-			compressedData = compressedData.replace(s.substring(s.length() - 1), s.substring(0, s.length() - 1));
+			compressedData = GlobalUtils.replace(compressedData, s.substring(s.length() - 1), s.substring(0, s.length() - 1));
 		}
 		
 		return compressedData;
 	}
 	
-	//parses the compressed data into 4 parts and stores them in their repective Strings
+	//parses the compressed data into 3 parts and stores them in their repective Strings
 	private void parseSections(String compiledData) {
-		StringBuilder data = new StringBuilder(compiledData);
-		
-		String[] dimensions = data.substring(0, 10).split(" ");
-		x = dimensions[0];
-		
-		data.delete(0, 10);
-		
-		String[] body = data.toString().split("\\Q:\\E");
-		compressedPixelData = body[0];
-		compiledDictionary = body[1];
+		String[] body = compiledData.split("\\Q:\\E");
+		x = body[0].split(",")[0];
+		compressedPixelData = body[1];
+		compiledDictionary = body[2];
 	}
 	
-	//get the decompressed pixel data (int[][])
+	//get the decompressed pixel data List<List<Integer>>
 	public List<List<Integer>> getPixelData() {
 		return createPixelData(decompress(compressedPixelData, new PrimaryDictionary(compiledDictionary)));
 	}
