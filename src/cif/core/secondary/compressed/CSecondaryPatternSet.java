@@ -5,7 +5,7 @@ import java.util.Arrays;
 import java.util.List;
 
 import cif.convenience.GlobalUtils;
-import cif.core.PatternSet;
+import cif.core.bases.PatternSet;
 
 public class CSecondaryPatternSet extends PatternSet {
 	private static final long serialVersionUID = 1645872516312319309L;

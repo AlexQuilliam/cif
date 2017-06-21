@@ -1,26 +1,14 @@
 package cif.core.secondary.compressed;
 
-import cif.convenience.GlobalUtils;
+import cif.core.bases.Dictionary;
+import cif.core.bases.SecondaryCompressor;
 
-public class CSecondaryCompressor {
-	private String cSCompressedData = "";
-	
+public class CSecondaryCompressor extends SecondaryCompressor{
 	public CSecondaryCompressor(String pCompressedData) {
-		CSecondaryDictionary dictionary = new CSecondaryDictionary(new CSecondaryPatternSet(pCompressedData), pCompressedData.charAt(pCompressedData.length() - 1));
-		this.cSCompressedData = compress(pCompressedData, dictionary);
-	}
-	
-	private String compress(String data, CSecondaryDictionary dictionary) {
-		for(String s : dictionary) {
-			data = GlobalUtils.replace(data, s.substring(0, s.length() - 1), s.substring(s.length() - 1));
-		}
-		
-		data += (":" + String.join("", dictionary));
-		
-		return data;
+		super(pCompressedData);
 	}
 
-	public String getCSCompressedData() {
-		return cSCompressedData;
+	public Dictionary createDictionary(String data, char lastEntry) {
+		return new Dictionary(new CSecondaryPatternSet(data), data.charAt(data.length() - 1));
 	}
 }

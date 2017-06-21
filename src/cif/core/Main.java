@@ -15,10 +15,6 @@ import cif.core.secondary.SecondaryCompressor;
 import cif.core.secondary.SecondaryDecompressor;
 import cif.core.secondary.compressed.CSecondaryPatternSet;
 
-//TODO:
-//*In PrimaryPatternSet, find out why the limit can't be less than 6
-//*In FileUtils, implement complete rotation functianality
-//*Optimize PixelShifter
 @SuppressWarnings("unused")
 public class Main {
 	private String input = "C:\\Users\\Alex K. Quilliam\\Desktop\\input.png";
@@ -65,6 +61,8 @@ public class Main {
 	}
 
 	public static void main(String[] args) {
+		Benchmark.start(20);
 		new Main();
+		Benchmark.endAndPrint(20, "Total program excecution time took: ", Unit.MILLISECONDS);
 	}
 }

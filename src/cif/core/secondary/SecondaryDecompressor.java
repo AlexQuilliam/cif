@@ -7,8 +7,8 @@ public class SecondaryDecompressor {
 	private String uSDecompressedData = "";
 
 	public SecondaryDecompressor(String sCompressedData) {
-		uSDecompressedData = new CSecondaryDecompressor(sCompressedData).getCSDecompressedData();
-		uSDecompressedData = new USecondaryDecompressor(uSDecompressedData).getUSDecompressedData();
+		uSDecompressedData = new CSecondaryDecompressor(sCompressedData).getSDecompressedData();
+		uSDecompressedData = new USecondaryDecompressor(uSDecompressedData).getSDecompressedData();
 	}
 
 	public String getUSDecompressedData() {

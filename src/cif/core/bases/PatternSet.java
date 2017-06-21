@@ -1,4 +1,4 @@
-package cif.core;
+package cif.core.bases;
 
 import java.util.ArrayList;
 import java.util.Arrays;

@@ -1,6 +1,6 @@
 package cif.core.primary;
 
-import cif.core.Dictionary;
+import cif.core.bases.Dictionary;
 
 public class PrimaryDictionary extends Dictionary {
 	private static final long serialVersionUID = -3361705036269364227L;
@@ -10,14 +10,6 @@ public class PrimaryDictionary extends Dictionary {
 	}
 	
 	public PrimaryDictionary(String compressedDictionary) {
-		super(compressedDictionary);
-	}
-	
-	public void createDictionaryFromCompiledData(String compiledDictionary) {
-		String[] entries = compiledDictionary.split("(?<=\\G.........)");
-		
-		for(String s : entries) {
-			this.add(s);
-		}
+		super(compressedDictionary, 9);
 	}
 }

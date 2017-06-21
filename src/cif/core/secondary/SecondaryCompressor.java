@@ -7,8 +7,8 @@ public class SecondaryCompressor {
 	private String uSCompressedData = "";
 
 	public SecondaryCompressor(String pCompressedData) {
-		uSCompressedData = new USecondaryCompressor(pCompressedData).getUSCompressedData();
-		uSCompressedData = new CSecondaryCompressor(uSCompressedData).getCSCompressedData();
+		uSCompressedData = new USecondaryCompressor(pCompressedData).getSCompressedData();
+		uSCompressedData = new CSecondaryCompressor(uSCompressedData).getSCompressedData();
 	}
 	
 	public String getUSCompressedData() {

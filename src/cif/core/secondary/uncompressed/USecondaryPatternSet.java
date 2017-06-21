@@ -1,7 +1,7 @@
 package cif.core.secondary.uncompressed;
 
 import cif.convenience.GlobalUtils;
-import cif.core.PatternSet;
+import cif.core.bases.PatternSet;
 
 public class USecondaryPatternSet extends PatternSet {
 	private static final long serialVersionUID = 1645872516312319309L;
