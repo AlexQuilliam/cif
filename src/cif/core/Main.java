@@ -24,7 +24,9 @@ public class Main {
 	@SuppressWarnings("unchecked")
 	public Main() {		
 		//prerequsites
+		Benchmark.start(19);
 		GlobalUtils.pixelData = (List<List<Integer>>) FileUtils.FileReader.read(input, ReadAs.PIXELDATA);
+		Benchmark.endAndPrint(19, "Reading the pixeldata took: ", Unit.MILLISECONDS);
 		GlobalUtils.pixelData = GlobalUtils.flipData(GlobalUtils.pixelData);
 		
 		Benchmark.start(4);
@@ -35,15 +37,15 @@ public class Main {
 		Benchmark.start(6);
 		String pCompressionResult = new PrimaryCompressor(GlobalUtils.pixelData).getPCompressedData();
 		Benchmark.endAndPrint(6, "Primary compression took: ", Unit.MILLISECONDS);
-			
-		FileUtils.FileWriter.write(textOutput, pCompressionResult, WriteAs.PLAINTEXT);
 		
 		//secondary compression
 		Benchmark.start(10);
 		String sCompressedData = new SecondaryCompressor(pCompressionResult).getUSCompressedData();
 		Benchmark.endAndPrint(10, "Secondary compressor took: ", Unit.MILLISECONDS);
 		
+		Benchmark.start(30);
 		FileUtils.FileWriter.write(textOutput, sCompressedData, WriteAs.PLAINTEXT);
+		Benchmark.endAndPrint(30, "Writing the primary and secondary compression results took: ", Unit.MILLISECONDS);
 		
 		//secondary decompression
 		Benchmark.start(11);
@@ -55,7 +57,9 @@ public class Main {
 		List<List<Integer>> decompressedPixelData = new PrimaryDecompressor(sDecompressedData).getPixelData();
 		Benchmark.endAndPrint(1, "Primary decompression took: ", Unit.MILLISECONDS);
 		
+		Benchmark.start(31);
 		FileUtils.FileWriter.write(pngOutput, decompressedPixelData, WriteAs.PNG);
+		Benchmark.endAndPrint(31, "Writing the primary and secondary decompression results took: ", Unit.MILLISECONDS);
 		
 		Print.ln("\nFile size is " + FileUtils.getFileSize(textOutput, Unit.KILOBYTES) + " kilobytes, down from " + FileUtils.getFileSize(pngOutput, Unit.KILOBYTES) + " kilobytes\n");
 	}

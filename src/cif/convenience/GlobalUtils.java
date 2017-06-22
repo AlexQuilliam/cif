@@ -10,11 +10,20 @@ import java.util.stream.Stream;
 public final class GlobalUtils {
 	public static List<List<Integer>> pixelData = null;
 	public static final ArrayList<Integer> reservedChars = new ArrayList<Integer>(Arrays.asList(0x002C, 0x0030, 0x0031, 0x0032, 0x0033, 0x0034, 0x0035, 0x0036, 0x0037, 0x0038, 0x0039, 0x003A));
+	public static final ArrayList<Integer> numeralReplacements = new ArrayList<Integer>(Arrays.asList(0x08A0, 0x08A1, 0x08A2, 0x08A3, 0x08A4, 0x08A5, 0x08A6, 0x08A7, 0x08A8, 0x08A9));
 	
 	public static List<List<Object>> group(List<Object> ungroupedList, int groupSize) {
 		int size = ungroupedList.size();
 		int fullChunks = (size - 1) / groupSize;
 	    return IntStream.range(0, fullChunks + 1).mapToObj(n -> ungroupedList.subList(n * groupSize, n == fullChunks ? size : (n + 1) * groupSize)).collect(Collectors.toList());
+	}
+	
+	//will only replace strings that are not substrings of similar strings. example:
+	//for params "lllll, ll", "ll", "qqqqq", the result will be "lllll, qqqqq". 
+	//using a normal replace, the result would be "qqqqqqqqqql, qqqqq"
+	public static String replaceAllExact(String data, String searchString, String replacement) {
+		char borderingChar = searchString.charAt(0);
+		return data.replaceAll("(?<!" + borderingChar + ")" + searchString + "(?!" + borderingChar + ")", replacement);
 	}
 	
 	public static List<Integer> flatten2DListToList(List<List<Integer>> data, Sort sort) {
