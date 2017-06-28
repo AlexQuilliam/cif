@@ -13,7 +13,6 @@ import cif.core.primary.PrimaryCompressor;
 import cif.core.primary.PrimaryDecompressor;
 import cif.core.secondary.SecondaryCompressor;
 import cif.core.secondary.SecondaryDecompressor;
-import cif.core.secondary.compressed.CSecondaryPatternSet;
 
 @SuppressWarnings("unused")
 public class Main {
@@ -43,9 +42,13 @@ public class Main {
 		String sCompressedData = new SecondaryCompressor(pCompressionResult).getUSCompressedData();
 		Benchmark.endAndPrint(10, "Secondary compressor took: ", Unit.MILLISECONDS);
 		
-		Benchmark.start(30);
-		FileUtils.FileWriter.write(textOutput, sCompressedData, WriteAs.PLAINTEXT);
-		Benchmark.endAndPrint(30, "Writing the primary and secondary compression results took: ", Unit.MILLISECONDS);
+		new Thread(new Runnable() {
+			public void run() {
+				Benchmark.start(30);
+				FileUtils.FileWriter.write(textOutput, sCompressedData, WriteAs.PLAINTEXT);
+				Benchmark.endAndPrint(30, "Writing the primary and secondary compression results took: ", Unit.MILLISECONDS);
+			}
+		}).start();
 		
 		//secondary decompression
 		Benchmark.start(11);

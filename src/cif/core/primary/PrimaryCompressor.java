@@ -3,7 +3,9 @@ package cif.core.primary;
 import java.util.List;
 import java.util.stream.Collectors;
 
+import cif.convenience.Benchmark;
 import cif.convenience.GlobalUtils;
+import cif.convenience.Unit;
 
 //Primary compressor; identifies reoccuring pixel values, and compresses them
 //takes pixel data (List<List<Integer>>) and compresses it
@@ -51,10 +53,12 @@ public class PrimaryCompressor {
 		
 		//create and append compressed pixel data
 		pixelData += String.join("", data.stream().map(l -> String.join("", l)).collect(Collectors.toList()));
-		
+
+		Benchmark.start(100);
 		for(String s : dictionary) {
 			pixelData = GlobalUtils.replace(pixelData, s.substring(0, s.length() - 1), s.substring(s.length() - 1));
 		}
+		Benchmark.endAndPrint(100, "Replace took: ", Unit.MILLISECONDS);
 		
 		compiledData += pixelData;
 		

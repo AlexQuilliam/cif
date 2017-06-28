@@ -21,6 +21,7 @@ public final class GlobalUtils {
 	//will only replace strings that are not substrings of similar strings. example:
 	//for params "lllll, ll", "ll", "qqqqq", the result will be "lllll, qqqqq". 
 	//using a normal replace, the result would be "qqqqqqqqqql, qqqqq"
+	//DON'T USE; not fully funtional right now
 	public static String replaceAllExact(String data, String searchString, String replacement) {
 		char borderingChar = searchString.charAt(0);
 		return data.replaceAll("(?<!" + borderingChar + ")" + searchString + "(?!" + borderingChar + ")", replacement);
@@ -69,6 +70,57 @@ public final class GlobalUtils {
 		buffer.append(text.substring(start));
 		return buffer.toString();
 	}
+	
+	/*public static String replace(String data, String target, String replacement) {
+		StringBuilder builder = new StringBuilder(data);
+		List<Integer> locations = find(data, target);
+		int offset = 0;
+		
+		for(int s : locations) {
+			s += offset;
+			builder.delete(s, s + target.length());
+			builder.insert(s, replacement);
+			offset = builder.length() - data.length();
+		}
+		
+		return builder.toString();
+	}
+	
+	private static List<Integer> find(String data, String target) { //inclusive
+		List<Integer> locations = new ArrayList<Integer>();
+		char[] dataChars = data.toCharArray();
+		char[] targetChars = target.toCharArray();
+		
+		int i = 0;
+		int k = 0;
+		int start = 0;
+		
+		for(char c : dataChars) {
+			if(c == targetChars[i]) {
+				boolean notTarget = false;
+				start = k;
+				
+				while(i < targetChars.length - 1) {
+					if(c != targetChars[i]) {
+						notTarget = true;
+						break;
+					}
+					
+					i++;
+				}
+				
+				if(!(notTarget)) {
+					locations.add(start);
+					start = 0;
+					i = 0;
+				}
+			}
+			
+			k++;
+		}
+		
+		return locations;
+	}*/
 	
 	//flips the signs of data values, e.g. if the input is negative, the output will be positive
 	public static List<List<Integer>> flipData(List<List<Integer>> data) {

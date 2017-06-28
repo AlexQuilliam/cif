@@ -3,7 +3,7 @@ package cif.core.secondary.compressed;
 import cif.core.bases.Dictionary;
 import cif.core.bases.SecondaryCompressor;
 
-public class CSecondaryCompressor extends SecondaryCompressor{
+public class CSecondaryCompressor extends SecondaryCompressor {
 	public CSecondaryCompressor(String pCompressedData) {
 		super(pCompressedData);
 	}

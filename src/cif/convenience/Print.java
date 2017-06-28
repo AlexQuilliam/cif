@@ -53,6 +53,12 @@ public class Print {
 		System.out.println(o);
 	}
 	
+	public static void err(Object o) {
+		if(disable) return;
+		
+		System.err.println(o);
+	}
+	
 	public static void ln() {
 		if(disable) return;
 		

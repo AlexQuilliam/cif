@@ -16,6 +16,7 @@ import cif.core.PixelDataObject;
 import cif.exceptions.InvalidTypeException;
 import cif.exceptions.InvalidUnitCodeException;
 
+//use only for single threads. for multiple threads, use FileUtilObject
 public final class FileUtils {
 	public static class FileReader {
 		public static enum ReadAs {

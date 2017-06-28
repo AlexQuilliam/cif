@@ -12,7 +12,7 @@ public class USecondaryPatternSet extends PatternSet {
 	}
 	
 	private String[] getProcessedData(String data) {
-		return data.split("(?<=\\G....)");
+		return data.split("(?<=\\G..)");
 	}
 	
 	private String getUncompressedData(String data) {

@@ -45,6 +45,28 @@ public class Benchmark {
 		elapsedTime.remove(id);
 	}
 	
+	public static double endAndGetTime(int id, Unit unit) {
+		if(disable) return 0;
+		end(id);
+		if(unit == Unit.SECONDS) {
+			return (elapsedTime.get(id) / 1000000000);
+		}else if(unit == Unit.MILLISECONDS) {
+			return (elapsedTime.get(id) / 1000000);
+		}else if(unit == Unit.NANOSECONDS) {
+			return (elapsedTime.get(id));
+		}else {
+			try {
+				throw new Exception("Invalid unit code \'" + unit + "\'");
+			}catch(Exception e) {
+				e.printStackTrace();
+			}
+		}
+		
+		elapsedTime.remove(id);
+		
+		return 0;
+	}
+	
 	public static void print(int id, String message, Unit unit) {
 		if(disable) return;
 		if(unit == Unit.SECONDS) {
