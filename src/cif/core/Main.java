@@ -17,7 +17,7 @@ import cif.core.secondary.SecondaryDecompressor;
 @SuppressWarnings("unused")
 public class Main {
 	private String input = "C:\\Users\\Alex K. Quilliam\\Desktop\\input.png";
-	private String textOutput = "C:\\Users\\Alex K. Quilliam\\Desktop\\output.txt";
+	private String cifOutput = "C:\\Users\\Alex K. Quilliam\\Desktop\\output.cif";
 	private String pngOutput = "C:\\Users\\Alex K. Quilliam\\Desktop\\output.png";
 
 	@SuppressWarnings("unchecked")
@@ -45,7 +45,7 @@ public class Main {
 		new Thread(new Runnable() {
 			public void run() {
 				Benchmark.start(30);
-				FileUtils.FileWriter.write(textOutput, sCompressedData, WriteAs.PLAINTEXT);
+				FileUtils.FileWriter.write(cifOutput, sCompressedData, WriteAs.PLAINTEXT);
 				Benchmark.endAndPrint(30, "Writing the primary and secondary compression results took: ", Unit.MILLISECONDS);
 			}
 		}).start();
@@ -64,7 +64,7 @@ public class Main {
 		FileUtils.FileWriter.write(pngOutput, decompressedPixelData, WriteAs.PNG);
 		Benchmark.endAndPrint(31, "Writing the primary and secondary decompression results took: ", Unit.MILLISECONDS);
 		
-		Print.ln("\nFile size is " + FileUtils.getFileSize(textOutput, Unit.KILOBYTES) + " kilobytes, down from " + FileUtils.getFileSize(pngOutput, Unit.KILOBYTES) + " kilobytes\n");
+		Print.ln("\nFile size is " + FileUtils.getFileSize(cifOutput, Unit.KILOBYTES) + " kilobytes, down from " + FileUtils.getFileSize(pngOutput, Unit.KILOBYTES) + " kilobytes\n");
 	}
 
 	public static void main(String[] args) {
