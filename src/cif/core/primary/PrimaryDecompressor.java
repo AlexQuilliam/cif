@@ -4,7 +4,7 @@ import java.util.Arrays;
 import java.util.List;
 import java.util.stream.Collectors;
 
-import cif.convenience.GlobalUtils;
+import cif.convenience.HelperUtils;
 
 public class PrimaryDecompressor {
 	private String x, compiledDictionary, compressedPixelData = "";
@@ -18,13 +18,13 @@ public class PrimaryDecompressor {
 	private List<List<Integer>> createPixelData(String decompressedData) {
 		String[] rawData = decompressedData.split("(?<=\\G........)");
 
-		return (List<List<Integer>>) (Object) GlobalUtils.group(Arrays.asList(rawData).stream().map(s -> Integer.parseInt(s) * -1).collect(Collectors.toList()), Integer.parseInt(x));
+		return (List<List<Integer>>) (Object) HelperUtils.group(Arrays.asList(rawData).stream().map(s -> Integer.parseInt(s) * -1).collect(Collectors.toList()), Integer.parseInt(x));
 	}
 	
 	//decompress the pixel data
 	private String decompress(String compressedData, PrimaryDictionary dictionary) {
 		for(String s : dictionary) {
-			compressedData = GlobalUtils.replace(compressedData, s.substring(s.length() - 1), s.substring(0, s.length() - 1));
+			compressedData = HelperUtils.replace(compressedData, s.substring(s.length() - 1), s.substring(0, s.length() - 1));
 		}
 		
 		return compressedData;

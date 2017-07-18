@@ -2,7 +2,7 @@ package cif.core.bases;
 
 import java.util.ArrayList;
 
-import cif.convenience.GlobalUtils;
+import cif.convenience.HelperUtils;
 
 public class Dictionary extends ArrayList<String> {
 	private static final long serialVersionUID = -1524456894288348683L;
@@ -33,7 +33,7 @@ public class Dictionary extends ArrayList<String> {
 	
 	private void createDictionaryFromPatterns(ArrayList<String> patterns, char lastEntry) {
 		for(int i = lastEntry + 1, index = 0; index < patterns.size(); i++) {
-			if(Character.isDefined(i) && isPrintable(i) && !(GlobalUtils.reservedChars.contains(i)) && !(GlobalUtils.numeralReplacements.contains(i))) {
+			if(Character.isDefined(i) && isPrintable(i) && !(HelperUtils.reservedChars.contains(i)) && !(HelperUtils.numeralReplacements.contains(i))) {
 				this.add((patterns.get(index)) + (char) i);
 				index++;
 			}

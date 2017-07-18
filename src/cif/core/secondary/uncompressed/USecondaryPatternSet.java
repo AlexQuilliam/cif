@@ -1,6 +1,6 @@
 package cif.core.secondary.uncompressed;
 
-import cif.convenience.GlobalUtils;
+import cif.convenience.HelperUtils;
 import cif.core.bases.PatternSet;
 
 public class USecondaryPatternSet extends PatternSet {
@@ -18,7 +18,7 @@ public class USecondaryPatternSet extends PatternSet {
 	private String getUncompressedData(String data) {
 		String[] sections = data.split(":");
 		data = sections[1] + sections[2];
-		data = data.codePoints().filter(c -> GlobalUtils.reservedChars.contains(c)).collect(StringBuilder::new, StringBuilder::appendCodePoint, StringBuilder::append).toString();
+		data = data.codePoints().filter(c -> HelperUtils.reservedChars.contains(c)).collect(StringBuilder::new, StringBuilder::appendCodePoint, StringBuilder::append).toString();
 		return data;
 	}
 } 

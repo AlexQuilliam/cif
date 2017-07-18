@@ -4,7 +4,7 @@ import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.List;
 
-import cif.convenience.GlobalUtils;
+import cif.convenience.HelperUtils;
 import cif.core.bases.PatternSet;
 
 public class CSecondaryPatternSet extends PatternSet {
@@ -28,7 +28,7 @@ public class CSecondaryPatternSet extends PatternSet {
 		data.clear();
 		
 		for(char c : knownPatterns) {
-			data.add(GlobalUtils.repeat(Character.toString(c), 2));
+			data.add(HelperUtils.repeat(Character.toString(c), 2));
 		}
 		
 		return data;
@@ -44,7 +44,7 @@ public class CSecondaryPatternSet extends PatternSet {
 	
 	private String getCompressedData(String data) {
 		data = data.split(":")[1];
-		data = data.codePoints().filter(c -> !(GlobalUtils.reservedChars.contains(c))).collect(StringBuilder::new, StringBuilder::appendCodePoint, StringBuilder::append).toString();
+		data = data.codePoints().filter(c -> !(HelperUtils.reservedChars.contains(c))).collect(StringBuilder::new, StringBuilder::appendCodePoint, StringBuilder::append).toString();
 		return data;
 	}
 } 

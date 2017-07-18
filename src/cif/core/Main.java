@@ -6,7 +6,7 @@ import cif.convenience.Benchmark;
 import cif.convenience.FileUtils;
 import cif.convenience.FileUtils.FileReader.ReadAs;
 import cif.convenience.FileUtils.FileWriter.WriteAs;
-import cif.convenience.GlobalUtils;
+import cif.convenience.HelperUtils;
 import cif.convenience.Print;
 import cif.convenience.Unit;
 import cif.core.primary.PrimaryCompressor;
@@ -19,22 +19,21 @@ public class Main {
 	private String input = "C:\\Users\\Alex K. Quilliam\\Desktop\\input.png";
 	private String cifOutput = "C:\\Users\\Alex K. Quilliam\\Desktop\\output.cif";
 	private String pngOutput = "C:\\Users\\Alex K. Quilliam\\Desktop\\output.png";
-
 	@SuppressWarnings("unchecked")
 	public Main() {		
 		//prerequsites
 		Benchmark.start(19);
-		GlobalUtils.pixelData = (List<List<Integer>>) FileUtils.FileReader.read(input, ReadAs.PIXELDATA);
+		HelperUtils.pixelData = (List<List<Integer>>) FileUtils.FileReader.read(input, ReadAs.PIXELDATA);
 		Benchmark.endAndPrint(19, "Reading the pixeldata took: ", Unit.MILLISECONDS);
-		GlobalUtils.pixelData = GlobalUtils.flipData(GlobalUtils.pixelData);
+		HelperUtils.pixelData = HelperUtils.flipData(HelperUtils.pixelData);
 		
 		Benchmark.start(4);
-		GlobalUtils.pixelData = new PixelBlender(GlobalUtils.pixelData).getBlendedData();
+		HelperUtils.pixelData = new PixelBlender(HelperUtils.pixelData).getBlendedData();
 		Benchmark.endAndPrint(4, "Pixel blending took: ", Unit.MILLISECONDS);
 		
 		//primary compression
 		Benchmark.start(6);
-		String pCompressionResult = new PrimaryCompressor(GlobalUtils.pixelData).getPCompressedData();
+		String pCompressionResult = new PrimaryCompressor(HelperUtils.pixelData).getPCompressedData();
 		Benchmark.endAndPrint(6, "Primary compression took: ", Unit.MILLISECONDS);
 		
 		//secondary compression
@@ -57,7 +56,7 @@ public class Main {
 		
 		//primary decompression
 		Benchmark.start(1);
-		List<List<Integer>> decompressedPixelData = new PrimaryDecompressor(sDecompressedData).getPixelData();
+		List<List<Integer>> decompressedPixelData = new PrimaryDecompressor(pCompressionResult).getPixelData();
 		Benchmark.endAndPrint(1, "Primary decompression took: ", Unit.MILLISECONDS);
 		
 		Benchmark.start(31);

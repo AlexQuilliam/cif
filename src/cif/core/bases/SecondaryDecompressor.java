@@ -1,6 +1,6 @@
 package cif.core.bases;
 
-import cif.convenience.GlobalUtils;
+import cif.convenience.HelperUtils;
 
 public class SecondaryDecompressor {
 	private String sDecompressedData = "";
@@ -12,7 +12,7 @@ public class SecondaryDecompressor {
 	
 	private String decompress(String data, Dictionary dictionary) {
 		for(String s : dictionary) {
-			data = GlobalUtils.replace(data, s.substring(s.length() - 1), s.substring(0, s.length() - 1));
+			data = HelperUtils.replace(data, s.substring(s.length() - 1), s.substring(0, s.length() - 1));
 		}
 		
 		return data;
