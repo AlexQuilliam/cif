@@ -1,69 +1,41 @@
 package cif.core;
 
-import java.util.List;
+import java.awt.image.BufferedImage;
 
+import cif.Compressor;
+import cif.Decompressor;
 import cif.convenience.Benchmark;
 import cif.convenience.FileUtils;
 import cif.convenience.FileUtils.FileReader.ReadAs;
 import cif.convenience.FileUtils.FileWriter.WriteAs;
-import cif.convenience.HelperUtils;
 import cif.convenience.Print;
 import cif.convenience.Unit;
-import cif.core.primary.PrimaryCompressor;
-import cif.core.primary.PrimaryDecompressor;
-import cif.core.secondary.SecondaryCompressor;
-import cif.core.secondary.SecondaryDecompressor;
 
 @SuppressWarnings("unused")
 public class Main {
 	private String input = "C:\\Users\\Alex K. Quilliam\\Desktop\\input.png";
 	private String cifOutput = "C:\\Users\\Alex K. Quilliam\\Desktop\\output.cif";
 	private String pngOutput = "C:\\Users\\Alex K. Quilliam\\Desktop\\output.png";
+	
 	@SuppressWarnings("unchecked")
-	public Main() {		
-		//prerequsites
-		Benchmark.start(19);
-		HelperUtils.pixelData = (List<List<Integer>>) FileUtils.FileReader.read(input, ReadAs.PIXELDATA);
-		Benchmark.endAndPrint(19, "Reading the pixeldata took: ", Unit.MILLISECONDS);
-		HelperUtils.pixelData = HelperUtils.flipData(HelperUtils.pixelData);
+	public Main() {
+		Benchmark.start(0);
+		BufferedImage image = (BufferedImage) FileUtils.FileReader.read(input, ReadAs.BUFFEREDIMAGE);
+		Benchmark.endAndPrint(0, "Reading the pixeldata (from a PNG file) took: ", Unit.MILLISECONDS);
 		
-		Benchmark.start(4);
-		HelperUtils.pixelData = new PixelBlender(HelperUtils.pixelData).getBlendedData();
-		Benchmark.endAndPrint(4, "Pixel blending took: ", Unit.MILLISECONDS);
+		String compressedData = new Compressor(image).getData();
 		
-		//primary compression
-		Benchmark.start(6);
-		String pCompressionResult = new PrimaryCompressor(HelperUtils.pixelData).getPCompressedData();
-		Benchmark.endAndPrint(6, "Primary compression took: ", Unit.MILLISECONDS);
+		Benchmark.start(30);
+		FileUtils.FileWriter.write(cifOutput, compressedData, WriteAs.PLAINTEXT);
+		Benchmark.endAndPrint(30, "Writing the primary and secondary compression results (to a CIF file) took: ", Unit.MILLISECONDS);
 		
-		//secondary compression
-		Benchmark.start(10);
-		String sCompressedData = new SecondaryCompressor(pCompressionResult).getUSCompressedData();
-		Benchmark.endAndPrint(10, "Secondary compressor took: ", Unit.MILLISECONDS);
-		
-		new Thread(new Runnable() {
-			public void run() {
-				Benchmark.start(30);
-				FileUtils.FileWriter.write(cifOutput, sCompressedData, WriteAs.PLAINTEXT);
-				Benchmark.endAndPrint(30, "Writing the primary and secondary compression results took: ", Unit.MILLISECONDS);
-			}
-		}).start();
-		
-		//secondary decompression
-		Benchmark.start(11);
-		String sDecompressedData = new SecondaryDecompressor(sCompressedData).getUSDecompressedData();
-		Benchmark.endAndPrint(11, "Secondary decompressor took: ", Unit.MILLISECONDS);
-		
-		//primary decompression
-		Benchmark.start(1);
-		List<List<Integer>> decompressedPixelData = new PrimaryDecompressor(pCompressionResult).getPixelData();
-		Benchmark.endAndPrint(1, "Primary decompression took: ", Unit.MILLISECONDS);
+		BufferedImage decompressedData = new Decompressor(compressedData).getData();
 		
 		Benchmark.start(31);
-		FileUtils.FileWriter.write(pngOutput, decompressedPixelData, WriteAs.PNG);
-		Benchmark.endAndPrint(31, "Writing the primary and secondary decompression results took: ", Unit.MILLISECONDS);
+		FileUtils.FileWriter.write(pngOutput, decompressedData, WriteAs.PNG);
+		Benchmark.endAndPrint(31, "Writing the primary and secondary decompression results (to a PNG file) took: ", Unit.MILLISECONDS);
 		
-		Print.ln("\nFile size is " + FileUtils.getFileSize(cifOutput, Unit.KILOBYTES) + " kilobytes, down from " + FileUtils.getFileSize(pngOutput, Unit.KILOBYTES) + " kilobytes\n");
+		Print.ln("\nFile size is " + FileUtils.getFileSize(cifOutput, Unit.KILOBYTES) + " kilobytes, up from " + FileUtils.getFileSize(pngOutput, Unit.KILOBYTES) + " kilobytes\n");
 	}
 
 	public static void main(String[] args) {

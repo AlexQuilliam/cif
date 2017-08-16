@@ -2,9 +2,11 @@ package cif.core.primary;
 
 import java.util.Arrays;
 import java.util.List;
+import java.util.Map;
 import java.util.stream.Collectors;
 
 import cif.convenience.HelperUtils;
+import cif.core.Dictionary;
 
 public class PrimaryDecompressor {
 	private String x, compiledDictionary, compressedPixelData = "";
@@ -22,9 +24,9 @@ public class PrimaryDecompressor {
 	}
 	
 	//decompress the pixel data
-	private String decompress(String compressedData, PrimaryDictionary dictionary) {
-		for(String s : dictionary) {
-			compressedData = HelperUtils.replace(compressedData, s.substring(s.length() - 1), s.substring(0, s.length() - 1));
+	private String decompress(String compressedData, Dictionary dictionary) {
+		for(Map.Entry<String, String> entry : dictionary.entrySet()) {
+			compressedData = HelperUtils.replace(compressedData, entry.getValue(), entry.getKey());
 		}
 		
 		return compressedData;
@@ -40,6 +42,6 @@ public class PrimaryDecompressor {
 	
 	//get the decompressed pixel data List<List<Integer>>
 	public List<List<Integer>> getPixelData() {
-		return createPixelData(decompress(compressedPixelData, new PrimaryDictionary(compiledDictionary)));
+		return createPixelData(decompress(compressedPixelData, new Dictionary(compiledDictionary, 9)));
 	}
 }

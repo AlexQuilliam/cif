@@ -1,9 +1,6 @@
 package cif.convenience;
 
-import java.awt.geom.AffineTransform;
-import java.awt.image.AffineTransformOp;
 import java.awt.image.BufferedImage;
-import java.awt.image.DataBufferInt;
 import java.io.File;
 import java.nio.file.Files;
 import java.nio.file.Paths;
@@ -16,7 +13,6 @@ import cif.core.PixelDataObject;
 import cif.exceptions.InvalidTypeException;
 import cif.exceptions.InvalidUnitCodeException;
 
-//use only for single threads. for multiple threads, use FileUtilObject
 public final class FileUtils {
 	public static class FileReader {
 		public static enum ReadAs {
@@ -82,53 +78,18 @@ public final class FileUtils {
 		private static void writeAsImage(String type, Object data, String filePath) {
 			try {
 				if (data instanceof BufferedImage) {
-					ImageIO.write(adjust((BufferedImage) data), "PNG", new File(filePath));
+					ImageIO.write(ImageUtils.adjust((BufferedImage) data), "PNG", new File(filePath));
 				}else if (data instanceof List<?>) {
 					@SuppressWarnings("unchecked")
-					BufferedImage image = convertPixelData((List<List<Integer>>) data);
+					BufferedImage image = ImageUtils.convertPixelData((List<List<Integer>>) data);
 					
-					ImageIO.write(adjust(image), "PNG", new File(filePath));
+					ImageIO.write(ImageUtils.adjust(image), "PNG", new File(filePath));
 				}else {
 					throw new InvalidTypeException();
 				}
 			}catch (Exception e) {
 				e.printStackTrace();
 			}
-		}
-		
-		private static BufferedImage convertPixelData(List<List<Integer>> data) {
-			int width = data.size();
-		    int height = data.get(0).size();
-			
-			BufferedImage image = new BufferedImage(width, height, BufferedImage.TYPE_INT_ARGB);
-			int[] pixelData = ((DataBufferInt) image.getRaster().getDataBuffer()).getData();
-			
-			for (int y = 0; y < height; y++) {
-		        for (int x = 0; x < width; x++) {
-		        	pixelData[y * width + x] = data.get(x).get(y);
-		        }
-		    }
-			
-			return image;
-		}
-		
-		//transform vertically (flip), rotate 90 degrees to the right
-		private static BufferedImage adjust(BufferedImage image) {
-			AffineTransform affineTransform = AffineTransform.getScaleInstance(1, -1);
-			affineTransform.translate(0, -(image.getHeight(null)));
-			image = new AffineTransformOp(affineTransform, AffineTransformOp.TYPE_NEAREST_NEIGHBOR).filter(image, null);
-			
-			int width = image.getWidth();
-			int height = image.getHeight();
-			BufferedImage buffer = new BufferedImage(height, width, image.getType());
-
-			for(int x = 0; x < width; x++) {
-				for(int y = 0; y < height; y++) {
-					buffer.setRGB(height - y - 1, x, image.getRGB(x, y));
-				}
-			}
-			
-			return buffer;
 		}
 	}
 	

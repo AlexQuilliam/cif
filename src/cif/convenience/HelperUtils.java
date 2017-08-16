@@ -12,10 +12,27 @@ import java.util.stream.Stream;
  */
 public final class HelperUtils {
 	/**
-	 * A variable meant to store the pixel data when it is created. This is only meant to be used in the {@link Main} class.
+	 * A variable meant to store the pixel data when it is created. This is only meant to be used in the {@link Compressor} class.
 	 * It is initialized to {@code null}.
 	 */
 	public static List<List<Integer>> pixelData = null;
+	/**
+	 * A variable meant to store sections of parsed compressed data. There are 5 sections upon initial initialization, each delimited with a colon (":"); the 
+	 * image metadata (length and height), the compressed pixel data (the body), the primary dictionary, the usecondary dictionary,
+	 * and the csecondary dictionary. A section may or may not exist in the list, depending on the stage. It is initialized to {@code null}.
+	 * <br>
+	 * <br>
+	 * The index of each section is as follows:
+	 * 
+	 * <ul>
+	 * <li>0: image metadata</li>
+	 * <li>1: compressed pixel data</li>
+	 * <li>2: primary dictionary</li>
+	 * <li>3: usecondary dictionary</li>
+	 * <li>4: csecondary dictionary</li>
+	 * </ul>
+	 */
+	public static List<String> sections = null;
 	/**
 	 * A {@code constant} list of characters that are reserved, preventing use as dictionary entries or other uses. It includes
 	 * the comma, numbers 0 through 9, and the colon.
@@ -36,7 +53,7 @@ public final class HelperUtils {
 	}
 	
 	/**
-	 * 
+	 * Repeats the given character sequence n number of times.
 	 * @param sequnce the string to be repeated
 	 * @param numberOfRepititions the number of times the string is to be repeated
 	 * @return the repeated string
@@ -87,5 +104,15 @@ public final class HelperUtils {
 	public static List<List<Integer>> flipData(List<List<Integer>> data) {
 		data = data.stream().map(l -> l.stream().map(i -> i * -1).collect(Collectors.toList())).collect(Collectors.toList());
 		return data;
+	}
+	
+	/**
+	 * Parses the data into sections, which are then added to {@link HelperUtils.sections}. See the javadoc for {@link HelperUtils.sections}
+	 * for more information.
+	 * @param data the data to be parsed
+	 * @return void
+	 */
+	public static void parseSections(String data) {
+		HelperUtils.sections = Arrays.asList(data.split(":"));
 	}
 }

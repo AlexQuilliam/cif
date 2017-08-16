@@ -1,9 +1,11 @@
 package cif.core.primary;
 
 import java.util.List;
+import java.util.Map;
 import java.util.stream.Collectors;
 
 import cif.convenience.HelperUtils;
+import cif.core.Dictionary;
 
 /**
  * The first compression stage. This compressor identifies reoccuring pixel values via {@link PrimaryPatternSet} 
@@ -26,7 +28,7 @@ public class PrimaryCompressor {
 	 */
 	public PrimaryCompressor(List<List<Integer>> data) {
 		List<List<String>> stringData = applyPadding(data);
-		PrimaryDictionary dictionary = new PrimaryDictionary(new PrimaryPatternSet(stringData));
+		Dictionary dictionary = new Dictionary(new PrimaryPatternSet(stringData), (char) 0);
 		compressedData = compress(stringData, dictionary);
 	}
 	
@@ -59,7 +61,7 @@ public class PrimaryCompressor {
 	
 	//compress the pixel data
 	@SuppressWarnings("unchecked")
-	private String compress(List<List<String>> data, PrimaryDictionary dictionary) {
+	private String compress(List<List<String>> data, Dictionary dictionary) {
 		String compiledData = "";
 		String pixelData = "";
 		String compiledDictionary = "";
@@ -70,15 +72,13 @@ public class PrimaryCompressor {
 		
 		pixelData = String.join("", data.stream().map(l -> String.join("", l)).collect(Collectors.toList()));
 		
-		for(String s : dictionary) {
-			pixelData = HelperUtils.replace(pixelData, s.substring(0, s.length() - 1), s.substring(s.length() - 1));
+		for(Map.Entry<String, String> entry : dictionary.entrySet()) {
+			pixelData = HelperUtils.replace(pixelData, entry.getKey(), entry.getValue());
 		}
 		
 		compiledData += pixelData;
 
-		for(String s : dictionary) {
-			compiledDictionary += s;
-		}
+		compiledDictionary += dictionary.toString();
 		
 		compiledData += (":" + compiledDictionary);
 		

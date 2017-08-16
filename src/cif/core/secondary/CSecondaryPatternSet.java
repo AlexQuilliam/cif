@@ -1,4 +1,4 @@
-package cif.core.secondary.compressed;
+package cif.core.secondary;
 
 import java.util.ArrayList;
 import java.util.Arrays;

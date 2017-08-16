@@ -1,4 +1,4 @@
-package cif.core.secondary.uncompressed;
+package cif.core.secondary;
 
 import cif.convenience.HelperUtils;
 import cif.core.bases.PatternSet;
